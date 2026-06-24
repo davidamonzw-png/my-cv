@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>David — Digital CV</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0D0F1A;
+      --bg-card:   #111425;
+      --bg-panel:  #0A0C16;
+      --blue:      #3B82F6;
+      --cyan:      #06B6D4;
+      --blue-glow: rgba(59, 130, 246, 0.18);
+      --cyan-glow: rgba(6, 182, 212, 0.12);
+      --text:      #E8EDF5;
+      --muted:     #6B7A99;
+      --border:    rgba(59, 130, 246, 0.14);
+      --radius:    10px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* ── Ambient background grid ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 288px;
+      min-width: 288px;
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      padding: 48px 28px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    /* Avatar */
+    .avatar-wrap {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .avatar-ring {
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: conic-gradient(var(--blue), var(--cyan), var(--blue));
+      animation: spin 4s linear infinite;
+      z-index: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .avatar-inner {
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      overflow: hidden;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .avatar-initial {
+      font-family: 'Space Mono', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--blue);
+    }
+    .avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .avatar-overlay {
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #fff;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 2;
+    }
+    .avatar-wrap:hover .avatar-overlay { opacity: 1; }
+    .avatar-file {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    /* Identity */
+    .identity { display: flex; flex-direction: column; gap: 6px; }
+    .identity h1 {
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      outline: none;
+    }
+    .identity h1:focus { border-bottom: 1px dashed var(--blue); }
+    .role-line {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .role-line::before { content: '> '; color: var(--blue); margin-right: 4px; }
+    .cursor-blink {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--cyan);
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Nav */
+    .nav { display: flex; flex-direction: column; gap: 2px; }
+    .nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 14px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: color 0.2s, background 0.2s;
+      position: relative;
+      letter-spacing: 0.01em;
+    }
+    .nav a .nav-icon {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--border);
+      width: 24px;
+      transition: color 0.2s;
+    }
+    .nav a:hover, .nav a.active {
+      color: var(--text);
+      background: var(--blue-glow);
+    }
+    .nav a:hover .nav-icon, .nav a.active .nav-icon { color: var(--blue); }
+    .nav a.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 18px;
+      background: linear-gradient(to bottom, var(--blue), var(--cyan));
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* Contact */
+    .contact-block { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .contact-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--blue-glow);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .contact-item span[contenteditable], .contact-item a {
+      color: var(--muted);
+      text-decoration: none;
+      outline: none;
+      transition: color 0.2s;
+    }
+    .contact-item span[contenteditable]:focus,
+    .contact-item a:hover { color: var(--cyan); }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1;
+      padding: 60px 64px;
+      max-width: 860px;
+      z-index: 1;
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    section { margin-bottom: 80px; }
+
+    /* Section header */
+    .section-header { margin-bottom: 28px; }
+    .section-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-eyebrow::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, var(--blue), transparent);
+    }
+    .section-title {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    /* About */
+    .about-text {
+      font-size: 15px;
+      line-height: 1.85;
+      color: #8A96B0;
+      max-width: 600px;
+      outline: none;
+    }
+    .about-text:focus { color: var(--text); border-left: 2px solid var(--blue); padding-left: 12px; }
+
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      gap: 24px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      min-width: 110px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 0 16px var(--blue-glow);
+    }
+    .stat-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--blue);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+    /* Skills */
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skill-tag {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .skill-tag::before { content: '#'; color: var(--blue); font-size: 11px; }
+    .skill-tag:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+    .skill-remove {
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1;
+      opacity: 0;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .skill-tag:hover .skill-remove { opacity: 1; }
+    .skill-remove:hover { color: #f87171; }
+
+    .add-row { display: flex; gap: 8px; margin-top: 18px; align-items: center; }
+    .input-field {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'Space Grotesk', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-field:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-glow);
+    }
+    .input-field::placeholder { color: var(--muted); }
+
+    .btn {
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #0D0F1A;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: opacity 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .btn:hover {
+      opacity: 0.88;
+      box-shadow: 0 0 18px rgba(59,130,246,0.35);
+    }
+    .btn-ghost {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--blue); }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      cursor: default;
+    }
+    .project-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 0 24px var(--blue-glow);
+      transform: translateY(-3px);
+    }
+
+    .project-thumb {
+      width: 100%;
+      height: 144px;
+      object-fit: cover;
+      display: block;
+    }
+    .project-thumb-placeholder {
+      width: 100%;
+      height: 144px;
+      background: linear-gradient(135deg, #111425 0%, #161A2E 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-thumb-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .project-thumb-placeholder span { font-size: 30px; z-index: 1; }
+
+    .project-body { padding: 16px 18px 18px; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 9px; }
+    .project-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: var(--blue-glow);
+      padding: 3px 7px;
+      border-radius: 3px;
+    }
+    .project-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+    .project-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .project-links { display: flex; gap: 12px; }
+    .project-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+    }
+    .project-link:hover { color: var(--blue); }
+
+    .project-remove {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(13,15,26,0.75);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s, color 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .project-card:hover .project-remove { opacity: 1; }
+    .project-remove:hover { color: #f87171; }
+
+    /* Upload zone */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 44px 32px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s, background 0.2s;
+      background: transparent;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--blue);
+      background: var(--blue-glow);
+    }
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .upload-zone h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    .upload-zone p { font-size: 12px; color: var(--muted); }
+
+    /* Experience / Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 20px;
+      align-items: start;
+      padding-bottom: 28px;
+    }
+    .timeline-year {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--blue);
+      text-align: right;
+      padding-top: 3px;
+      line-height: 1.4;
+    }
+    .timeline-content {
+      border-left: 1px solid var(--border);
+      padding-left: 24px;
+      position: relative;
+    }
+    .timeline-content::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan);
+      position: absolute;
+      left: -4px;
+      top: 5px;
+    }
+    .timeline-role {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+      letter-spacing: -0.01em;
+    }
+    .timeline-org {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--blue);
+      margin-bottom: 7px;
+    }
+    .timeline-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(13,15,26,0.82);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 24px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px;
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 0 60px rgba(59,130,246,0.12);
+    }
+    .modal h2 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .modal label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .modal .input-field { width: 100%; }
+    .modal textarea.input-field { resize: vertical; min-height: 76px; }
+    #thumbPreview {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 6px;
+      display: none;
+      border: 1px solid var(--border);
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    /* Responsive */
+    @media (max-width: 780px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; min-width: unset; height: auto; position: static; padding: 28px 20px; }
+      .main { padding: 32px 20px; }
+      .timeline-item { grid-template-columns: 1fr; gap: 4px; }
+      .timeline-year { text-align: left; }
+      body::before { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="avatar-wrap">
+    <div class="avatar-ring"></div>
+    <div class="avatar-inner">
+      <div class="avatar-initial" id="avatarInitial">D</div>
+      <img id="avatarImg" src="" alt="Profile" />
+    </div>
+    <div class="avatar-overlay">Change<br>photo</div>
+    <input type="file" class="avatar-file" accept="image/*" id="avatarFile" />
+  </div>
+
+  <div class="identity">
+    <h1 contenteditable="true" spellcheck="false" id="cvName">David</h1>
+    <div class="role-line"><span id="roleText"></span><span class="cursor-blink"></span></div>
+  </div>
+
+  <nav class="nav">
+    <a href="#about" class="active"><span class="nav-icon">01</span>About</a>
+    <a href="#skills"><span class="nav-icon">02</span>Skills</a>
+    <a href="#projects"><span class="nav-icon">03</span>Projects</a>
+    <a href="#experience"><span class="nav-icon">04</span>Experience</a>
+  </nav>
+
+  <div class="contact-block">
+    <div class="contact-item">
+      <div class="contact-icon">📍</div>
+      <span contenteditable="true" spellcheck="false">Zimbabwe</span>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">📧</div>
+      <span contenteditable="true" spellcheck="false">your@email.com</span>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">🌐</div>
+      <a href="https://finesse-properties-app.vercel.app" target="_blank" contenteditable="true" spellcheck="false">finesse-properties-app.vercel.app</a>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">💼</div>
+      <a href="#" contenteditable="true" spellcheck="false">LinkedIn</a>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ABOUT -->
+  <section id="about" class="reveal">
+    <div class="section-header">
+      <div class="section-eyebrow">About</div>
+      <h2 class="section-title">Who I am.</h2>
+    </div>
+    <p class="about-text" contenteditable="true" spellcheck="false">
+      A builder with a passion for creating products that matter. I'm currently developing Finesse Properties — a real estate platform tailored for the Zimbabwe market — combining clean design with practical functionality. Click here to edit this section and tell your own story.
+    </p>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" contenteditable="true" spellcheck="false">1+</div>
+        <div class="stat-label">Live Projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" contenteditable="true" spellcheck="false">3+</div>
+        <div class="stat-label">Years Building</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" contenteditable="true" spellcheck="false">ZW</div>
+        <div class="stat-label">Based In</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="reveal">
+    <div class="section-header">
+      <div class="section-eyebrow">Skills</div>
+      <h2 class="section-title">What I bring.</h2>
+    </div>
+    <div class="skills-grid" id="skillsGrid"></div>
+    <div class="add-row">
+      <input type="text" class="input-field" id="skillInput" placeholder="Add a skill…" style="width:190px" />
+      <button class="btn" onclick="addSkill()">Add</button>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="reveal">
+    <div class="section-header">
+      <div class="section-eyebrow">Projects</div>
+      <h2 class="section-title">What I've built.</h2>
+    </div>
+    <div class="projects-grid" id="projectsGrid"></div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" accept="image/*" id="projectImageInput" />
+      <span class="upload-icon">⊕</span>
+      <h3>Add a project</h3>
+      <p>Upload a screenshot or drag an image here</p>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="reveal">
+    <div class="section-header">
+      <div class="section-eyebrow">Experience</div>
+      <h2 class="section-title">Where I've been.</h2>
+    </div>
+    <div class="timeline" id="timeline"></div>
+    <button class="btn-ghost" onclick="openExpModal()" style="margin-top:8px">+ Add experience</button>
+  </section>
+
+</main>
+
+<!-- PROJECT MODAL -->
+<div class="modal-backdrop" id="projectModal">
+  <div class="modal">
+    <h2>Add project</h2>
+    <img id="thumbPreview" alt="Thumbnail preview" />
+    <div>
+      <label>Project title</label>
+      <input type="text" class="input-field" id="projTitle" placeholder="e.g. Finesse Properties" />
+    </div>
+    <div>
+      <label>Description</label>
+      <textarea class="input-field" id="projDesc" placeholder="What does it do? What problem does it solve?"></textarea>
+    </div>
+    <div>
+      <label>Tags (comma-separated)</label>
+      <input type="text" class="input-field" id="projTags" placeholder="React, Real Estate, Zimbabwe" />
+    </div>
+    <div>
+      <label>Live URL (optional)</label>
+      <input type="text" class="input-field" id="projUrl" placeholder="https://" />
+    </div>
+    <div>
+      <label>GitHub URL (optional)</label>
+      <input type="text" class="input-field" id="projGithub" placeholder="https://github.com/…" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeProjectModal()">Cancel</button>
+      <button class="btn" onclick="saveProject()">Save project</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE MODAL -->
+<div class="modal-backdrop" id="expModal">
+  <div class="modal">
+    <h2>Add experience</h2>
+    <div>
+      <label>Role / Title</label>
+      <input type="text" class="input-field" id="expTitle" placeholder="e.g. Frontend Developer" />
+    </div>
+    <div>
+      <label>Organisation</label>
+      <input type="text" class="input-field" id="expOrg" placeholder="e.g. Acme Corp" />
+    </div>
+    <div>
+      <label>Years</label>
+      <input type="text" class="input-field" id="expYear" placeholder="e.g. 2022 – 2024" />
+    </div>
+    <div>
+      <label>Description</label>
+      <textarea class="input-field" id="expDesc" placeholder="What did you do? What did you build?"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeExpModal()">Cancel</button>
+      <button class="btn" onclick="saveExp()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Typewriter ──
+  const roles = ['Developer', 'Builder', 'Designer', 'Problem Solver'];
+  let ri = 0, ci = 0, del = false;
+  const roleEl = document.getElementById('roleText');
+  function type() {
+    const word = roles[ri];
+    if (!del) {
+      roleEl.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { del = true; setTimeout(type, 2000); return; }
+    } else {
+      roleEl.textContent = word.slice(0, --ci);
+      if (ci === 0) { del = false; ri = (ri + 1) % roles.length; }
+    }
+    setTimeout(type, del ? 55 : 95);
+  }
+  type();
+
+  // ── Avatar ──
+  document.getElementById('avatarFile').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    const img = document.getElementById('avatarImg');
+    img.src = URL.createObjectURL(f);
+    img.style.display = 'block';
+    document.getElementById('avatarInitial').style.display = 'none';
+  });
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Nav active ──
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) cur = s.id; });
+    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  }, { passive: true });
+
+  // ── Skills ──
+  const skills = ['JavaScript', 'React', 'HTML & CSS', 'Vercel', 'GitHub', 'Google Analytics'];
+  function renderSkills() {
+    document.getElementById('skillsGrid').innerHTML = skills.map((s, i) =>
+      `<span class="skill-tag">${s}<span class="skill-remove" onclick="removeSkill(${i})">×</span></span>`
+    ).join('');
+  }
+  function addSkill() {
+    const inp = document.getElementById('skillInput');
+    const v = inp.value.trim(); if (!v) return;
+    skills.push(v); inp.value = ''; renderSkills();
+  }
+  function removeSkill(i) { skills.splice(i, 1); renderSkills(); }
+  document.getElementById('skillInput').addEventListener('keydown', e => { if (e.key === 'Enter') addSkill(); });
+  renderSkills();
+
+  // ── Projects ──
+  const projects = [];
+  let pendingImg = null;
+
+  document.getElementById('projectImageInput').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f) return;
+    pendingImg = URL.createObjectURL(f);
+    const p = document.getElementById('thumbPreview');
+    p.src = pendingImg; p.style.display = 'block';
+    document.getElementById('projectModal').classList.add('open');
+    e.target.value = '';
+  });
+
+  const dz = document.getElementById('uploadZone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0]; if (!f || !f.type.startsWith('image/')) return;
+    pendingImg = URL.createObjectURL(f);
+    const p = document.getElementById('thumbPreview');
+    p.src = pendingImg; p.style.display = 'block';
+    document.getElementById('projectModal').classList.add('open');
+  });
+
+  function closeProjectModal() {
+    document.getElementById('projectModal').classList.remove('open');
+    ['projTitle','projDesc','projTags','projUrl','projGithub'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('thumbPreview').style.display = 'none';
+    pendingImg = null;
+  }
+
+  function saveProject() {
+    const title = document.getElementById('projTitle').value.trim() || 'Untitled';
+    const desc  = document.getElementById('projDesc').value.trim();
+    const tags  = document.getElementById('projTags').value.split(',').map(t => t.trim()).filter(Boolean);
+    const url   = document.getElementById('projUrl').value.trim();
+    const gh    = document.getElementById('projGithub').value.trim();
+    projects.push({ title, desc, tags, url, gh, img: pendingImg });
+    renderProjects(); closeProjectModal();
+  }
+
+  function renderProjects() {
+    document.getElementById('projectsGrid').innerHTML = projects.map((p, i) => `
+      <div class="project-card">
+        <button class="project-remove" onclick="removeProject(${i})">×</button>
+        ${p.img
+          ? `<img class="project-thumb" src="${p.img}" alt="${p.title}" />`
+          : `<div class="project-thumb-placeholder"><span>📁</span></div>`}
+        <div class="project-body">
+          ${p.tags.length ? `<div class="project-tags">${p.tags.map(t=>`<span class="project-tag">${t}</span>`).join('')}</div>` : ''}
+          <div class="project-title">${p.title}</div>
+          ${p.desc ? `<div class="project-desc">${p.desc}</div>` : ''}
+          <div class="project-links">
+            ${p.url ? `<a class="project-link" href="${p.url}" target="_blank">↗ Live</a>` : ''}
+            ${p.gh  ? `<a class="project-link" href="${p.gh}"  target="_blank">⌥ GitHub</a>` : ''}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function removeProject(i) { projects.splice(i, 1); renderProjects(); }
+
+  // Pre-load Finesse Properties
+  projects.push({
+    title: 'Finesse Properties',
+    desc: 'A real estate platform built for the Zimbabwe market. Browse, list, and discover properties with a clean modern interface.',
+    tags: ['React', 'Real Estate', 'Zimbabwe'],
+    url: 'https://finesse-properties-app.vercel.app',
+    gh: '',
+    img: null
+  });
+  renderProjects();
+
+  // ── Experience ──
+  const exps = [];
+  function openExpModal() { document.getElementById('expModal').classList.add('open'); }
+  function closeExpModal() {
+    document.getElementById('expModal').classList.remove('open');
+    ['expTitle','expOrg','expYear','expDesc'].forEach(id => document.getElementById(id).value = '');
+  }
+  function saveExp() {
+    exps.unshift({
+      title: document.getElementById('expTitle').value.trim() || 'Role',
+      org:   document.getElementById('expOrg').value.trim(),
+      year:  document.getElementById('expYear').value.trim(),
+      desc:  document.getElementById('expDesc').value.trim()
+    });
+    renderTimeline(); closeExpModal();
+  }
+  function renderTimeline() {
+    const el = document.getElementById('timeline');
+    if (!exps.length) {
+      el.innerHTML = '<p style="color:var(--muted);font-size:13px;font-family:Space Mono,monospace">// No entries yet — add your first below</p>';
+      return;
+    }
+    el.innerHTML = exps.map(e => `
+      <div class="timeline-item">
+        <div class="timeline-year">${e.year || '—'}</div>
+        <div class="timeline-content">
+          <div class="timeline-role">${e.title}</div>
+          ${e.org  ? `<div class="timeline-org">${e.org}</div>` : ''}
+          ${e.desc ? `<div class="timeline-desc">${e.desc}</div>` : ''}
+        </div>
+      </div>`).join('');
+  }
+  renderTimeline();
+</script>
+</body>
+</html>
