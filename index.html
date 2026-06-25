@@ -790,49 +790,21 @@
       <div class="section-eyebrow">Certificates</div>
       <h2 class="section-title">What I've earned.</h2>
     </div>
-    <div class="projects-grid" id="certsGrid">
-      <div class="project-card">
-        <div class="project-thumb-placeholder"><span>🐍</span></div>
-        <div class="project-body">
-          <div class="project-tags"><span class="project-tag">Programming</span></div>
-          <div class="project-title">Python Certificate</div>
-          <div class="project-desc">Completed Cisco's Python programming course, covering core language fundamentals and scripting.</div>
-          <div class="project-links"><span class="project-link">Cisco</span></div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-thumb-placeholder"><span>⚙️</span></div>
-        <div class="project-body">
-          <div class="project-tags"><span class="project-tag">Programming</span></div>
-          <div class="project-title">C++ Certificate</div>
-          <div class="project-desc">Completed Cisco's C++ programming course, covering object-oriented programming and system-level development.</div>
-          <div class="project-links"><span class="project-link">Cisco</span></div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-thumb-placeholder"><span>🏭</span></div>
-        <div class="project-body">
-          <div class="project-tags"><span class="project-tag">EEE</span></div>
-          <div class="project-title">Siemens Certificate</div>
-          <div class="project-desc">Certified by Siemens in electrical and automation systems relevant to Building Management Systems.</div>
-          <div class="project-links"><span class="project-link">Siemens</span></div>
-        </div>
-      </div>
-      <div class="project-card">
-        <div class="project-thumb-placeholder"><span>⚡</span></div>
-        <div class="project-body">
-          <div class="project-tags"><span class="project-tag">EEE</span><span class="project-tag">Smart Grid</span></div>
-          <div class="project-title">Smart Grid & Power Quality</div>
-          <div class="project-desc">Completed NPTEL's course on Smart Grid Systems and Power Quality — covering modern energy infrastructure and grid technologies.</div>
-          <div class="project-links"><span class="project-link">NPTEL</span></div>
-        </div>
-      </div>
-    </div>
+    <div class="projects-grid" id="certsGrid"></div>
   </section>
 
 </main>
 
-<!-- PROJECT MODAL -->
+<!-- CERTIFICATE IMAGE MODAL -->
+<div class="modal-backdrop" id="certImgModal">
+  <div class="modal">
+    <h2 id="certImgTitle">Certificate</h2>
+    <img id="certImgFull" src="" alt="Certificate" style="width:100%;border-radius:8px;border:1px solid var(--border);" />
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="document.getElementById('certImgModal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
 <div class="modal-backdrop" id="projectModal">
   <div class="modal">
     <h2>Add project</h2>
@@ -949,7 +921,49 @@
   document.getElementById('skillInput').addEventListener('keydown', e => { if (e.key === 'Enter') addSkill(); });
   renderSkills();
 
-  // ── Projects ──
+  // ── Certificates ──
+  const certs = [
+    { icon: '🐍', title: 'Python Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's Python programming course, covering core language fundamentals and scripting.", img: null },
+    { icon: '⚙️', title: 'C++ Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's C++ programming course, covering object-oriented programming and system-level development.", img: null },
+    { icon: '🏭', title: 'Siemens Certificate', issuer: 'Siemens', tags: ['EEE'], desc: 'Certified by Siemens in electrical and automation systems relevant to Building Management Systems.', img: null },
+    { icon: '⚡', title: 'Smart Grid & Power Quality', issuer: 'NPTEL', tags: ['EEE', 'Smart Grid'], desc: "Completed NPTEL's course on Smart Grid Systems and Power Quality — covering modern energy infrastructure and grid technologies.", img: null },
+  ];
+
+  function renderCerts() {
+    document.getElementById('certsGrid').innerHTML = certs.map((c, i) => `
+      <div class="project-card">
+        ${c.img
+          ? `<img class="project-thumb" src="${c.img}" alt="${c.title}" style="cursor:pointer" onclick="viewCertImg(${i})" />`
+          : `<div class="project-thumb-placeholder" style="cursor:pointer;position:relative;" onclick="triggerCertUpload(${i})">
+               <span>${c.icon}</span>
+               <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;">click to upload</div>
+             </div>`}
+        <input type="file" accept="image/*" id="certFile${i}" style="display:none" onchange="uploadCert(event,${i})" />
+        <div class="project-body">
+          <div class="project-tags">${c.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
+          <div class="project-title">${c.title}</div>
+          <div class="project-desc">${c.desc}</div>
+          <div class="project-links" style="flex-wrap:wrap;gap:10px;">
+            <span class="project-link" style="color:var(--muted);cursor:default;">📋 ${c.issuer}</span>
+            ${c.img ? `<span class="project-link" style="cursor:pointer;" onclick="viewCertImg(${i})">👁 View</span>` : `<span class="project-link" style="cursor:pointer;" onclick="triggerCertUpload(${i})">⊕ Upload</span>`}
+            ${c.img ? `<span class="project-link" style="cursor:pointer;color:#f87171;" onclick="removeCertImg(${i})">× Remove</span>` : ''}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function triggerCertUpload(i) { document.getElementById('certFile' + i).click(); }
+  function uploadCert(e, i) {
+    const f = e.target.files[0]; if (!f) return;
+    certs[i].img = URL.createObjectURL(f); renderCerts();
+  }
+  function removeCertImg(i) { certs[i].img = null; renderCerts(); }
+  function viewCertImg(i) {
+    document.getElementById('certImgTitle').textContent = certs[i].title;
+    document.getElementById('certImgFull').src = certs[i].img;
+    document.getElementById('certImgModal').classList.add('open');
+  }
+  renderCerts();
   const projects = [];
   let pendingImg = null;
 
