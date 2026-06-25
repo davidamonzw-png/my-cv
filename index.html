@@ -923,30 +923,33 @@
 
   // ── Certificates ──
   const certs = [
-    { icon: '🐍', title: 'Python Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's Python programming course, covering core language fundamentals and scripting.", img: null },
-    { icon: '⚙️', title: 'C++ Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's C++ programming course, covering object-oriented programming and system-level development.", img: null },
-    { icon: '🏭', title: 'Siemens Certificate', issuer: 'Siemens', tags: ['EEE'], desc: 'Certified by Siemens in electrical and automation systems relevant to Building Management Systems.', img: null },
-    { icon: '⚡', title: 'Smart Grid & Power Quality', issuer: 'NPTEL', tags: ['EEE', 'Smart Grid'], desc: "Completed NPTEL's course on Smart Grid Systems and Power Quality — covering modern energy infrastructure and grid technologies.", img: null },
+    { icon: '🐍', title: 'Python Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's Python programming course, covering core language fundamentals and scripting.", file: null, fileType: null },
+    { icon: '⚙️', title: 'C++ Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's C++ programming course, covering object-oriented programming and system-level development.", file: null, fileType: null },
+    { icon: '🏭', title: 'Siemens Certificate', issuer: 'Siemens', tags: ['EEE'], desc: 'Certified by Siemens in electrical and automation systems relevant to Building Management Systems.', file: null, fileType: null },
+    { icon: '⚡', title: 'Smart Grid Systems', issuer: 'NPTEL', tags: ['EEE', 'Smart Grid'], desc: "Completed NPTEL's course on Smart Grid Systems — covering modern energy infrastructure, grid architecture and technologies.", file: null, fileType: null },
+    { icon: '🔌', title: 'Power Quality', issuer: 'NPTEL', tags: ['EEE', 'Power'], desc: "Completed NPTEL's course on Power Quality — covering voltage stability, harmonics, and power system performance.", file: null, fileType: null },
   ];
 
   function renderCerts() {
     document.getElementById('certsGrid').innerHTML = certs.map((c, i) => `
       <div class="project-card">
-        ${c.img
-          ? `<img class="project-thumb" src="${c.img}" alt="${c.title}" style="cursor:pointer" onclick="viewCertImg(${i})" />`
+        <input type="file" accept="image/*,application/pdf" id="certFile${i}" style="display:none" onchange="uploadCert(event,${i})" />
+        ${c.file && c.fileType === 'image'
+          ? `<img class="project-thumb" src="${c.file}" alt="${c.title}" style="cursor:pointer" onclick="viewCert(${i})" />`
           : `<div class="project-thumb-placeholder" style="cursor:pointer;position:relative;" onclick="triggerCertUpload(${i})">
                <span>${c.icon}</span>
-               <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;">click to upload</div>
+               <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;">${c.file ? '📄 PDF uploaded' : 'click to upload'}</div>
              </div>`}
-        <input type="file" accept="image/*" id="certFile${i}" style="display:none" onchange="uploadCert(event,${i})" />
         <div class="project-body">
           <div class="project-tags">${c.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
           <div class="project-title">${c.title}</div>
           <div class="project-desc">${c.desc}</div>
           <div class="project-links" style="flex-wrap:wrap;gap:10px;">
             <span class="project-link" style="color:var(--muted);cursor:default;">📋 ${c.issuer}</span>
-            ${c.img ? `<span class="project-link" style="cursor:pointer;" onclick="viewCertImg(${i})">👁 View</span>` : `<span class="project-link" style="cursor:pointer;" onclick="triggerCertUpload(${i})">⊕ Upload</span>`}
-            ${c.img ? `<span class="project-link" style="cursor:pointer;color:#f87171;" onclick="removeCertImg(${i})">× Remove</span>` : ''}
+            ${c.file
+              ? `<span class="project-link" style="cursor:pointer;" onclick="viewCert(${i})">👁 View</span>
+                 <span class="project-link" style="cursor:pointer;color:#f87171;" onclick="removeCert(${i})">× Remove</span>`
+              : `<span class="project-link" style="cursor:pointer;" onclick="triggerCertUpload(${i})">⊕ Upload</span>`}
           </div>
         </div>
       </div>`).join('');
@@ -955,13 +958,20 @@
   function triggerCertUpload(i) { document.getElementById('certFile' + i).click(); }
   function uploadCert(e, i) {
     const f = e.target.files[0]; if (!f) return;
-    certs[i].img = URL.createObjectURL(f); renderCerts();
+    const url = URL.createObjectURL(f);
+    certs[i].file = url;
+    certs[i].fileType = f.type === 'application/pdf' ? 'pdf' : 'image';
+    renderCerts();
   }
-  function removeCertImg(i) { certs[i].img = null; renderCerts(); }
-  function viewCertImg(i) {
-    document.getElementById('certImgTitle').textContent = certs[i].title;
-    document.getElementById('certImgFull').src = certs[i].img;
-    document.getElementById('certImgModal').classList.add('open');
+  function removeCert(i) { certs[i].file = null; certs[i].fileType = null; renderCerts(); }
+  function viewCert(i) {
+    if (certs[i].fileType === 'pdf') {
+      window.open(certs[i].file, '_blank');
+    } else {
+      document.getElementById('certImgTitle').textContent = certs[i].title;
+      document.getElementById('certImgFull').src = certs[i].file;
+      document.getElementById('certImgModal').classList.add('open');
+    }
   }
   renderCerts();
   const projects = [];
@@ -1006,18 +1016,24 @@
   }
 
   function renderProjects() {
-    document.getElementById('projectsGrid').innerHTML = projects.map((p, i) => `
-      <div class="project-card">
-        <button class="project-remove" onclick="removeProject(${i})">×</button>
-        ${p.img
-          ? `<img class="project-thumb" src="${p.img}" alt="${p.title}" />`
-          : `<div class="project-thumb-placeholder"><span>📁</span></div>`}
-        <div class="project-body">
-          ${p.tags.length ? `<div class="project-tags">${p.tags.map(t=>`<span class="project-tag">${t}</span>`).join('')}</div>` : ''}
-          <div class="project-title">${p.title}</div>
-          ${p.desc ? `<div class="project-desc">${p.desc}</div>` : ''}
-          <div class="project-links">
-            ${p.url ? `<a class="project-link" href="${p.url}" target="_blank">↗ Live</a>` : ''}
+    const grid = document.getElementById('projectsGrid');
+    grid.style.display = 'flex';
+    grid.style.flexDirection = 'column';
+    grid.style.gap = '12px';
+    grid.innerHTML = projects.map((p, i) => `
+      <div class="project-card" style="display:flex;gap:0;border-radius:10px;overflow:hidden;">
+        <div style="width:90px;min-width:90px;background:linear-gradient(135deg,#111425,#161A2E);display:flex;align-items:center;justify-content:center;font-size:28px;border-right:1px solid var(--border);position:relative;">
+          ${p.img ? `<img src="${p.img}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" />` : '🖥️'}
+        </div>
+        <div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:5px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+            <div class="project-title" style="margin:0;">${p.title}</div>
+            <button class="project-remove" style="position:static;opacity:1;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0;line-height:1;" onclick="removeProject(${i})">×</button>
+          </div>
+          ${p.desc ? `<div class="project-desc" style="margin:0;">${p.desc}</div>` : ''}
+          ${p.tags.length ? `<div class="project-tags" style="margin:0;">${p.tags.map(t=>`<span class="project-tag">${t}</span>`).join('')}</div>` : ''}
+          <div class="project-links" style="margin-top:4px;">
+            ${p.url ? `<a class="project-link" href="${p.url}" target="_blank">↗ Live site</a>` : ''}
             ${p.gh  ? `<a class="project-link" href="${p.gh}"  target="_blank">⌥ GitHub</a>` : ''}
           </div>
         </div>
