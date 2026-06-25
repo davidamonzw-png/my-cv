@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>David — Digital CV</title>
+  <title>David Amon — Digital CV</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -682,7 +682,7 @@
   </div>
 
   <div class="identity">
-    <h1 contenteditable="true" spellcheck="false" id="cvName">David</h1>
+    <h1 contenteditable="true" spellcheck="false" id="cvName">David Amon</h1>
     <div class="role-line"><span id="roleText"></span><span class="cursor-blink"></span></div>
   </div>
 
@@ -691,6 +691,7 @@
     <a href="#skills"><span class="nav-icon">02</span>Skills</a>
     <a href="#projects"><span class="nav-icon">03</span>Projects</a>
     <a href="#experience"><span class="nav-icon">04</span>Experience</a>
+    <a href="#certificates"><span class="nav-icon">05</span>Certificates</a>
   </nav>
 
   <div class="contact-block">
@@ -700,15 +701,19 @@
     </div>
     <div class="contact-item">
       <div class="contact-icon">📧</div>
-      <span contenteditable="true" spellcheck="false">your@email.com</span>
+      <span contenteditable="true" spellcheck="false">davidamon.zw@gmail.com</span>
     </div>
     <div class="contact-item">
       <div class="contact-icon">🌐</div>
       <a href="https://finesse-properties-app.vercel.app" target="_blank" contenteditable="true" spellcheck="false">finesse-properties-app.vercel.app</a>
     </div>
     <div class="contact-item">
-      <div class="contact-icon">💼</div>
-      <a href="#" contenteditable="true" spellcheck="false">LinkedIn</a>
+      <div class="contact-icon">🎓</div>
+      <span contenteditable="true" spellcheck="false">Vignan Institute of IT</span>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">📞</div>
+      <span contenteditable="true" spellcheck="false">+263 78 439 2292</span>
     </div>
   </div>
 </aside>
@@ -723,7 +728,7 @@
       <h2 class="section-title">Who I am.</h2>
     </div>
     <p class="about-text" contenteditable="true" spellcheck="false">
-      A builder with a passion for creating products that matter. I'm currently developing Finesse Properties — a real estate platform tailored for the Zimbabwe market — combining clean design with practical functionality. Click here to edit this section and tell your own story.
+      Electrical & Electronic Engineering student at Vignan Institute of Information Technology, with a passion for building digital products that solve real problems. I bridge the gap between hardware systems and the web — from configuring Building Management Systems to deploying full-stack applications. Currently developing Finesse Properties, a real estate platform built for the Zimbabwe market.
     </p>
     <div class="stats-row">
       <div class="stat-card">
@@ -731,12 +736,12 @@
         <div class="stat-label">Live Projects</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num" contenteditable="true" spellcheck="false">3+</div>
-        <div class="stat-label">Years Building</div>
+        <div class="stat-num" contenteditable="true" spellcheck="false">4</div>
+        <div class="stat-label">Certificates</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num" contenteditable="true" spellcheck="false">ZW</div>
-        <div class="stat-label">Based In</div>
+        <div class="stat-num" contenteditable="true" spellcheck="false">21</div>
+        <div class="stat-label">Years Old</div>
       </div>
     </div>
   </section>
@@ -777,6 +782,52 @@
     </div>
     <div class="timeline" id="timeline"></div>
     <button class="btn-ghost" onclick="openExpModal()" style="margin-top:8px">+ Add experience</button>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section id="certificates" class="reveal">
+    <div class="section-header">
+      <div class="section-eyebrow">Certificates</div>
+      <h2 class="section-title">What I've earned.</h2>
+    </div>
+    <div class="projects-grid" id="certsGrid">
+      <div class="project-card">
+        <div class="project-thumb-placeholder"><span>🐍</span></div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">Programming</span></div>
+          <div class="project-title">Python Certificate</div>
+          <div class="project-desc">Completed Cisco's Python programming course, covering core language fundamentals and scripting.</div>
+          <div class="project-links"><span class="project-link">Cisco</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb-placeholder"><span>⚙️</span></div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">Programming</span></div>
+          <div class="project-title">C++ Certificate</div>
+          <div class="project-desc">Completed Cisco's C++ programming course, covering object-oriented programming and system-level development.</div>
+          <div class="project-links"><span class="project-link">Cisco</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb-placeholder"><span>🏭</span></div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">EEE</span></div>
+          <div class="project-title">Siemens Certificate</div>
+          <div class="project-desc">Certified by Siemens in electrical and automation systems relevant to Building Management Systems.</div>
+          <div class="project-links"><span class="project-link">Siemens</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb-placeholder"><span>⚡</span></div>
+        <div class="project-body">
+          <div class="project-tags"><span class="project-tag">EEE</span><span class="project-tag">Smart Grid</span></div>
+          <div class="project-title">Smart Grid & Power Quality</div>
+          <div class="project-desc">Completed NPTEL's course on Smart Grid Systems and Power Quality — covering modern energy infrastructure and grid technologies.</div>
+          <div class="project-links"><span class="project-link">NPTEL</span></div>
+        </div>
+      </div>
+    </div>
   </section>
 
 </main>
@@ -883,7 +934,7 @@
   }, { passive: true });
 
   // ── Skills ──
-  const skills = ['JavaScript', 'React', 'HTML & CSS', 'Vercel', 'GitHub', 'Google Analytics'];
+  const skills = ['Python', 'C++', 'Web Deployment', 'Google Analytics', 'Google Search Console', 'Vercel', 'GitHub', 'Web Linking & Integration', 'Building Management Systems', 'Smart Grid Systems', 'Power Quality'];
   function renderSkills() {
     document.getElementById('skillsGrid').innerHTML = skills.map((s, i) =>
       `<span class="skill-tag">${s}<span class="skill-remove" onclick="removeSkill(${i})">×</span></span>`
