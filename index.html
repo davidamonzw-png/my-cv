@@ -33,7 +33,6 @@
       overflow-x: hidden;
     }
 
-    /* ── Ambient background grid ── */
     body::before {
       content: '';
       position: fixed;
@@ -46,7 +45,7 @@
       z-index: 0;
     }
 
-    /* ── SIDEBAR ── */
+    /* SIDEBAR */
     .sidebar {
       width: 288px;
       min-width: 288px;
@@ -63,7 +62,6 @@
       z-index: 10;
     }
 
-    /* Avatar */
     .avatar-wrap {
       width: 76px;
       height: 76px;
@@ -102,7 +100,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: none;
     }
     .avatar-overlay {
       position: absolute;
@@ -131,7 +128,6 @@
       border-radius: 50%;
     }
 
-    /* Identity */
     .identity { display: flex; flex-direction: column; gap: 6px; }
     .identity h1 {
       font-size: 21px;
@@ -147,7 +143,6 @@
       color: var(--cyan);
       display: flex;
       align-items: center;
-      gap: 0;
     }
     .role-line::before { content: '> '; color: var(--blue); margin-right: 4px; }
     .cursor-blink {
@@ -161,7 +156,6 @@
     }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Nav */
     .nav { display: flex; flex-direction: column; gap: 2px; }
     .nav a {
       text-decoration: none;
@@ -201,7 +195,6 @@
       border-radius: 0 2px 2px 0;
     }
 
-    /* Contact */
     .contact-block { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
     .contact-item {
       display: flex;
@@ -231,7 +224,7 @@
     .contact-item span[contenteditable]:focus,
     .contact-item a:hover { color: var(--cyan); }
 
-    /* ── MAIN ── */
+    /* MAIN */
     .main {
       flex: 1;
       padding: 60px 64px;
@@ -239,7 +232,6 @@
       z-index: 1;
     }
 
-    /* Reveal animation */
     .reveal {
       opacity: 0;
       transform: translateY(22px);
@@ -249,7 +241,6 @@
 
     section { margin-bottom: 80px; }
 
-    /* Section header */
     .section-header { margin-bottom: 28px; }
     .section-eyebrow {
       font-family: 'Space Mono', monospace;
@@ -287,7 +278,6 @@
     }
     .about-text:focus { color: var(--text); border-left: 2px solid var(--blue); padding-left: 12px; }
 
-    /* Stats row */
     .stats-row {
       display: flex;
       gap: 24px;
@@ -398,57 +388,41 @@
     .btn-ghost:hover { color: var(--text); border-color: var(--blue); }
 
     /* Projects */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
-      gap: 18px;
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
       margin-bottom: 20px;
     }
-
     .project-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow: hidden;
+      padding: 20px 24px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
       position: relative;
-      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
-      cursor: default;
+      transition: border-color 0.25s, box-shadow 0.25s;
     }
     .project-card:hover {
       border-color: var(--blue);
       box-shadow: 0 0 24px var(--blue-glow);
-      transform: translateY(-3px);
     }
-
-    .project-thumb {
-      width: 100%;
-      height: 144px;
-      object-fit: cover;
-      display: block;
-    }
-    .project-thumb-placeholder {
-      width: 100%;
-      height: 144px;
-      background: linear-gradient(135deg, #111425 0%, #161A2E 100%);
+    .project-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      background: var(--blue-glow);
+      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      overflow: hidden;
+      font-size: 20px;
+      flex-shrink: 0;
     }
-    .project-thumb-placeholder::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-    .project-thumb-placeholder span { font-size: 30px; z-index: 1; }
-
-    .project-body { padding: 16px 18px 18px; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 9px; }
+    .project-body { flex: 1; min-width: 0; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
     .project-tag {
       font-family: 'Space Mono', monospace;
       font-size: 9px;
@@ -464,15 +438,14 @@
       font-size: 15px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 6px;
-      line-height: 1.3;
+      margin-bottom: 5px;
       letter-spacing: -0.01em;
     }
     .project-desc {
       font-size: 12px;
       color: var(--muted);
       line-height: 1.65;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .project-links { display: flex; gap: 12px; }
     .project-link {
@@ -488,66 +461,97 @@
     }
     .project-link:hover { color: var(--blue); }
 
-    .project-remove {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: rgba(13,15,26,0.75);
+    /* Certificates */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .cert-card {
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      color: var(--muted);
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .cert-card:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 18px var(--cyan-glow);
+    }
+    .cert-thumb-wrap {
+      position: relative;
+      width: 100%;
+      height: 130px;
       cursor: pointer;
-      font-size: 14px;
+      overflow: hidden;
+      background: var(--bg-panel);
+    }
+    .cert-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .cert-thumb-wrap:hover .cert-thumb { transform: scale(1.04); }
+    .cert-thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(13,15,26,0.55);
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity 0.2s, color 0.2s;
-      backdrop-filter: blur(4px);
+      transition: opacity 0.2s;
+      font-size: 28px;
     }
-    .project-card:hover .project-remove { opacity: 1; }
-    .project-remove:hover { color: #f87171; }
-
-    /* Upload zone */
-    .upload-zone {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 44px 32px;
-      text-align: center;
-      cursor: pointer;
-      position: relative;
-      transition: border-color 0.2s, background 0.2s;
-      background: transparent;
+    .cert-thumb-wrap:hover .cert-thumb-overlay { opacity: 1; }
+    .cert-body { padding: 14px 16px 16px; }
+    .cert-issuer {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--blue);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
-    .upload-zone:hover, .upload-zone.drag-over {
-      border-color: var(--blue);
-      background: var(--blue-glow);
-    }
-    .upload-zone input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-    }
-    .upload-icon {
-      font-size: 30px;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .upload-zone h3 {
-      font-size: 14px;
-      font-weight: 600;
+    .cert-title {
+      font-size: 13px;
+      font-weight: 700;
       color: var(--text);
-      margin-bottom: 5px;
+      line-height: 1.35;
+      margin-bottom: 10px;
     }
-    .upload-zone p { font-size: 12px; color: var(--muted); }
+    .cert-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cert-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .cert-btn-view {
+      background: var(--blue-glow);
+      color: var(--blue);
+      border: 1px solid var(--border);
+    }
+    .cert-btn-view:hover { background: var(--blue); color: #0D0F1A; }
+    .cert-btn-open {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .cert-btn-open:hover { color: var(--cyan); border-color: var(--cyan); }
 
-    /* Experience / Timeline */
-    .timeline { display: flex; flex-direction: column; gap: 0; }
+    /* Experience */
+    .timeline { display: flex; flex-direction: column; }
     .timeline-item {
       display: grid;
       grid-template-columns: 100px 1fr;
@@ -584,7 +588,6 @@
       font-weight: 700;
       color: var(--text);
       margin-bottom: 2px;
-      letter-spacing: -0.01em;
     }
     .timeline-org {
       font-family: 'Space Mono', monospace;
@@ -594,11 +597,11 @@
     }
     .timeline-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-    /* Modal */
+    /* Modals */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(13,15,26,0.82);
+      background: rgba(13,15,26,0.85);
       backdrop-filter: blur(6px);
       display: none;
       align-items: center;
@@ -637,20 +640,59 @@
     }
     .modal .input-field { width: 100%; }
     .modal textarea.input-field { resize: vertical; min-height: 76px; }
-    #thumbPreview {
-      width: 100%;
-      height: 130px;
-      object-fit: cover;
-      border-radius: 6px;
-      display: none;
-      border: 1px solid var(--border);
-    }
     .modal-actions {
       display: flex;
       justify-content: flex-end;
       gap: 10px;
       margin-top: 4px;
     }
+
+    /* Cert lightbox */
+    #certLightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(13,15,26,0.95);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      padding: 32px;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #certLightbox.open { display: flex; }
+    #certLightbox img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      object-fit: contain;
+    }
+    #certLightboxTitle {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+    }
+    #certLightboxClose {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 20px;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #certLightboxClose:hover { color: var(--text); border-color: var(--blue); }
 
     /* Responsive */
     @media (max-width: 780px) {
@@ -674,15 +716,14 @@
   <div class="avatar-wrap">
     <div class="avatar-ring"></div>
     <div class="avatar-inner">
-      <div class="avatar-initial" id="avatarInitial">D</div>
-      <img id="avatarImg" src="" alt="Profile" />
+      <img id="avatarImg" src="https://drive.google.com/uc?export=view&id=1D3qW2TEYPMlmMwIlyth1R1LCJBv1Oc_o" alt="David Amon" />
     </div>
     <div class="avatar-overlay">Change<br>photo</div>
     <input type="file" class="avatar-file" accept="image/*" id="avatarFile" />
   </div>
 
   <div class="identity">
-    <h1 contenteditable="true" spellcheck="false" id="cvName">David Amon</h1>
+    <h1 contenteditable="true" spellcheck="false">David Amon</h1>
     <div class="role-line"><span id="roleText"></span><span class="cursor-blink"></span></div>
   </div>
 
@@ -704,16 +745,20 @@
       <span contenteditable="true" spellcheck="false">davidamon.zw@gmail.com</span>
     </div>
     <div class="contact-item">
-      <div class="contact-icon">🌐</div>
-      <a href="https://finesse-properties-app.vercel.app" target="_blank" contenteditable="true" spellcheck="false">finesse-properties-app.vercel.app</a>
-    </div>
-    <div class="contact-item">
-      <div class="contact-icon">🎓</div>
-      <span contenteditable="true" spellcheck="false">Vignan Institute of IT</span>
+      <div class="contact-icon">📧</div>
+      <span contenteditable="true" spellcheck="false">dee123.zw@gmail.com</span>
     </div>
     <div class="contact-item">
       <div class="contact-icon">📞</div>
       <span contenteditable="true" spellcheck="false">+263 78 439 2292</span>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">🏫</div>
+      <span contenteditable="true" spellcheck="false">Vignan Institute of IT</span>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">💻</div>
+      <a href="https://github.com/davidamonzw-png" target="_blank">github.com/davidamonzw-png</a>
     </div>
   </div>
 </aside>
@@ -728,7 +773,7 @@
       <h2 class="section-title">Who I am.</h2>
     </div>
     <p class="about-text" contenteditable="true" spellcheck="false">
-      Electrical & Electronic Engineering student at Vignan Institute of Information Technology, with a passion for building digital products that solve real problems. I bridge the gap between hardware systems and the web — from configuring Building Management Systems to deploying full-stack applications. Currently developing Finesse Properties, a real estate platform built for the Zimbabwe market.
+      Electrical &amp; Electronic Engineering student at Vignan Institute of Information Technology, with a passion for building digital products that solve real problems. I bridge the gap between hardware systems and the web — from configuring Building Management Systems to deploying full-stack applications. Currently developing Finesse Properties, a real estate platform built for the Zimbabwe market.
     </p>
     <div class="stats-row">
       <div class="stat-card">
@@ -765,13 +810,8 @@
       <div class="section-eyebrow">Projects</div>
       <h2 class="section-title">What I've built.</h2>
     </div>
-    <div class="projects-grid" id="projectsGrid"></div>
-    <div class="upload-zone" id="uploadZone">
-      <input type="file" accept="image/*" id="projectImageInput" />
-      <span class="upload-icon">⊕</span>
-      <h3>Add a project</h3>
-      <p>Upload a screenshot or drag an image here</p>
-    </div>
+    <div class="projects-list" id="projectsList"></div>
+    <button class="btn-ghost" onclick="openProjectModal()" style="margin-top:8px">+ Add project</button>
   </section>
 
   <!-- EXPERIENCE -->
@@ -790,28 +830,26 @@
       <div class="section-eyebrow">Certificates</div>
       <h2 class="section-title">What I've earned.</h2>
     </div>
-    <div class="projects-grid" id="certsGrid"></div>
+    <div class="certs-grid" id="certsGrid"></div>
   </section>
 
 </main>
 
-<!-- CERTIFICATE IMAGE MODAL -->
-<div class="modal-backdrop" id="certImgModal">
-  <div class="modal">
-    <h2 id="certImgTitle">Certificate</h2>
-    <img id="certImgFull" src="" alt="Certificate" style="width:100%;border-radius:8px;border:1px solid var(--border);" />
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="document.getElementById('certImgModal').classList.remove('open')">Close</button>
-    </div>
-  </div>
+<!-- CERT LIGHTBOX -->
+<div id="certLightbox">
+  <button id="certLightboxClose" onclick="closeLightbox()">×</button>
+  <div id="certLightboxTitle"></div>
+  <img id="certLightboxImg" src="" alt="Certificate" />
+  <a id="certLightboxOpen" href="#" target="_blank" class="cert-btn cert-btn-open" style="font-size:12px;padding:8px 16px;">↗ Open in Drive</a>
 </div>
+
+<!-- PROJECT MODAL -->
 <div class="modal-backdrop" id="projectModal">
   <div class="modal">
     <h2>Add project</h2>
-    <img id="thumbPreview" alt="Thumbnail preview" />
     <div>
       <label>Project title</label>
-      <input type="text" class="input-field" id="projTitle" placeholder="e.g. Finesse Properties" />
+      <input type="text" class="input-field" id="projTitle" placeholder="e.g. 3S Li-ion BMS" />
     </div>
     <div>
       <label>Description</label>
@@ -819,7 +857,7 @@
     </div>
     <div>
       <label>Tags (comma-separated)</label>
-      <input type="text" class="input-field" id="projTags" placeholder="React, Real Estate, Zimbabwe" />
+      <input type="text" class="input-field" id="projTags" placeholder="ESP32, IoT, Hardware" />
     </div>
     <div>
       <label>Live URL (optional)</label>
@@ -828,6 +866,10 @@
     <div>
       <label>GitHub URL (optional)</label>
       <input type="text" class="input-field" id="projGithub" placeholder="https://github.com/…" />
+    </div>
+    <div>
+      <label>Icon / emoji</label>
+      <input type="text" class="input-field" id="projIcon" placeholder="e.g. 🔋" style="width:80px" />
     </div>
     <div class="modal-actions">
       <button class="btn-ghost" onclick="closeProjectModal()">Cancel</button>
@@ -864,8 +906,8 @@
 </div>
 
 <script>
-  // ── Typewriter ──
-  const roles = ['Developer', 'Builder', 'Designer', 'Problem Solver'];
+  // Typewriter
+  const roles = ['EEE Student', 'Problem Solver', 'Builder', 'Developer'];
   let ri = 0, ci = 0, del = false;
   const roleEl = document.getElementById('roleText');
   function type() {
@@ -881,22 +923,19 @@
   }
   type();
 
-  // ── Avatar ──
+  // Avatar upload (override hardcoded)
   document.getElementById('avatarFile').addEventListener('change', e => {
     const f = e.target.files[0]; if (!f) return;
-    const img = document.getElementById('avatarImg');
-    img.src = URL.createObjectURL(f);
-    img.style.display = 'block';
-    document.getElementById('avatarInitial').style.display = 'none';
+    document.getElementById('avatarImg').src = URL.createObjectURL(f);
   });
 
-  // ── Scroll reveal ──
+  // Scroll reveal
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // ── Nav active ──
+  // Nav active
   const sections = document.querySelectorAll('section');
   const navLinks = document.querySelectorAll('.nav a');
   window.addEventListener('scroll', () => {
@@ -905,7 +944,7 @@
     navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
   }, { passive: true });
 
-  // ── Skills ──
+  // Skills
   const skills = ['Python', 'C++', 'Web Deployment', 'Google Analytics', 'Google Search Console', 'Vercel', 'GitHub', 'Web Linking & Integration', 'Building Management Systems', 'Smart Grid Systems', 'Power Quality'];
   function renderSkills() {
     document.getElementById('skillsGrid').innerHTML = skills.map((s, i) =>
@@ -921,139 +960,52 @@
   document.getElementById('skillInput').addEventListener('keydown', e => { if (e.key === 'Enter') addSkill(); });
   renderSkills();
 
-  // ── Certificates ──
-  const certs = [
-    { icon: '🐍', title: 'Python Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's Python programming course, covering core language fundamentals and scripting.", file: null, fileType: null },
-    { icon: '⚙️', title: 'C++ Certificate', issuer: 'Cisco', tags: ['Programming'], desc: "Completed Cisco's C++ programming course, covering object-oriented programming and system-level development.", file: null, fileType: null },
-    { icon: '🏭', title: 'Siemens Certificate', issuer: 'Siemens', tags: ['EEE'], desc: 'Certified by Siemens in electrical and automation systems relevant to Building Management Systems.', file: null, fileType: null },
-    { icon: '⚡', title: 'Smart Grid Systems', issuer: 'NPTEL', tags: ['EEE', 'Smart Grid'], desc: "Completed NPTEL's course on Smart Grid Systems — covering modern energy infrastructure, grid architecture and technologies.", file: null, fileType: null },
-    { icon: '🔌', title: 'Power Quality', issuer: 'NPTEL', tags: ['EEE', 'Power'], desc: "Completed NPTEL's course on Power Quality — covering voltage stability, harmonics, and power system performance.", file: null, fileType: null },
+  // Projects
+  const projects = [
+    {
+      title: '3S Li-ion BMS Monitoring',
+      desc: 'ESP32-based Battery Management System with IoT telemetry via Blynk, I2C LCD display, real-time voltage/temperature monitoring, SoC estimation, and automated alerts.',
+      tags: ['ESP32', 'IoT', 'Blynk', 'Hardware', 'EEE'],
+      url: '',
+      gh: 'https://github.com/davidamonzw-png/3s-Li-ion-BMS-Monitoring',
+      icon: '🔋'
+    }
   ];
 
-  function renderCerts() {
-    document.getElementById('certsGrid').innerHTML = certs.map((c, i) => `
+  function renderProjects() {
+    document.getElementById('projectsList').innerHTML = projects.map((p, i) => `
       <div class="project-card">
-        <input type="file" accept="image/*,application/pdf" id="certFile${i}" style="display:none" onchange="uploadCert(event,${i})" />
-        ${c.file && c.fileType === 'image'
-          ? `<img class="project-thumb" src="${c.file}" alt="${c.title}" style="cursor:pointer" onclick="viewCert(${i})" />`
-          : `<div class="project-thumb-placeholder" style="cursor:pointer;position:relative;" onclick="triggerCertUpload(${i})">
-               <span>${c.icon}</span>
-               <div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;">${c.file ? '📄 PDF uploaded' : 'click to upload'}</div>
-             </div>`}
+        <div class="project-icon">${p.icon || '📁'}</div>
         <div class="project-body">
-          <div class="project-tags">${c.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
-          <div class="project-title">${c.title}</div>
-          <div class="project-desc">${c.desc}</div>
-          <div class="project-links" style="flex-wrap:wrap;gap:10px;">
-            <span class="project-link" style="color:var(--muted);cursor:default;">📋 ${c.issuer}</span>
-            ${c.file
-              ? `<span class="project-link" style="cursor:pointer;" onclick="viewCert(${i})">👁 View</span>
-                 <span class="project-link" style="cursor:pointer;color:#f87171;" onclick="removeCert(${i})">× Remove</span>`
-              : `<span class="project-link" style="cursor:pointer;" onclick="triggerCertUpload(${i})">⊕ Upload</span>`}
+          ${p.tags.length ? `<div class="project-tags">${p.tags.map(t=>`<span class="project-tag">${t}</span>`).join('')}</div>` : ''}
+          <div class="project-title">${p.title}</div>
+          ${p.desc ? `<div class="project-desc">${p.desc}</div>` : ''}
+          <div class="project-links">
+            ${p.url ? `<a class="project-link" href="${p.url}" target="_blank">↗ Live</a>` : ''}
+            ${p.gh  ? `<a class="project-link" href="${p.gh}"  target="_blank">⌥ GitHub</a>` : ''}
           </div>
         </div>
       </div>`).join('');
   }
+  renderProjects();
 
-  function triggerCertUpload(i) { document.getElementById('certFile' + i).click(); }
-  function uploadCert(e, i) {
-    const f = e.target.files[0]; if (!f) return;
-    const url = URL.createObjectURL(f);
-    certs[i].file = url;
-    certs[i].fileType = f.type === 'application/pdf' ? 'pdf' : 'image';
-    renderCerts();
-  }
-  function removeCert(i) { certs[i].file = null; certs[i].fileType = null; renderCerts(); }
-  function viewCert(i) {
-    if (certs[i].fileType === 'pdf') {
-      window.open(certs[i].file, '_blank');
-    } else {
-      document.getElementById('certImgTitle').textContent = certs[i].title;
-      document.getElementById('certImgFull').src = certs[i].file;
-      document.getElementById('certImgModal').classList.add('open');
-    }
-  }
-  renderCerts();
-  const projects = [];
-  let pendingImg = null;
-
-  document.getElementById('projectImageInput').addEventListener('change', e => {
-    const f = e.target.files[0]; if (!f) return;
-    pendingImg = URL.createObjectURL(f);
-    const p = document.getElementById('thumbPreview');
-    p.src = pendingImg; p.style.display = 'block';
-    document.getElementById('projectModal').classList.add('open');
-    e.target.value = '';
-  });
-
-  const dz = document.getElementById('uploadZone');
-  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
-  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
-  dz.addEventListener('drop', e => {
-    e.preventDefault(); dz.classList.remove('drag-over');
-    const f = e.dataTransfer.files[0]; if (!f || !f.type.startsWith('image/')) return;
-    pendingImg = URL.createObjectURL(f);
-    const p = document.getElementById('thumbPreview');
-    p.src = pendingImg; p.style.display = 'block';
-    document.getElementById('projectModal').classList.add('open');
-  });
-
+  function openProjectModal() { document.getElementById('projectModal').classList.add('open'); }
   function closeProjectModal() {
     document.getElementById('projectModal').classList.remove('open');
-    ['projTitle','projDesc','projTags','projUrl','projGithub'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('thumbPreview').style.display = 'none';
-    pendingImg = null;
+    ['projTitle','projDesc','projTags','projUrl','projGithub','projIcon'].forEach(id => document.getElementById(id).value = '');
   }
-
   function saveProject() {
     const title = document.getElementById('projTitle').value.trim() || 'Untitled';
     const desc  = document.getElementById('projDesc').value.trim();
     const tags  = document.getElementById('projTags').value.split(',').map(t => t.trim()).filter(Boolean);
     const url   = document.getElementById('projUrl').value.trim();
     const gh    = document.getElementById('projGithub').value.trim();
-    projects.push({ title, desc, tags, url, gh, img: pendingImg });
+    const icon  = document.getElementById('projIcon').value.trim() || '📁';
+    projects.push({ title, desc, tags, url, gh, icon });
     renderProjects(); closeProjectModal();
   }
 
-  function renderProjects() {
-    const grid = document.getElementById('projectsGrid');
-    grid.style.display = 'flex';
-    grid.style.flexDirection = 'column';
-    grid.style.gap = '12px';
-    grid.innerHTML = projects.map((p, i) => `
-      <div class="project-card" style="display:flex;gap:0;border-radius:10px;overflow:hidden;">
-        <div style="width:90px;min-width:90px;background:linear-gradient(135deg,#111425,#161A2E);display:flex;align-items:center;justify-content:center;font-size:28px;border-right:1px solid var(--border);position:relative;">
-          ${p.img ? `<img src="${p.img}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;" />` : '🖥️'}
-        </div>
-        <div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:5px;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
-            <div class="project-title" style="margin:0;">${p.title}</div>
-            <button class="project-remove" style="position:static;opacity:1;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;padding:0;line-height:1;" onclick="removeProject(${i})">×</button>
-          </div>
-          ${p.desc ? `<div class="project-desc" style="margin:0;">${p.desc}</div>` : ''}
-          ${p.tags.length ? `<div class="project-tags" style="margin:0;">${p.tags.map(t=>`<span class="project-tag">${t}</span>`).join('')}</div>` : ''}
-          <div class="project-links" style="margin-top:4px;">
-            ${p.url ? `<a class="project-link" href="${p.url}" target="_blank">↗ Live site</a>` : ''}
-            ${p.gh  ? `<a class="project-link" href="${p.gh}"  target="_blank">⌥ GitHub</a>` : ''}
-          </div>
-        </div>
-      </div>`).join('');
-  }
-
-  function removeProject(i) { projects.splice(i, 1); renderProjects(); }
-
-  // Pre-load Finesse Properties
-  projects.push({
-    title: 'Finesse Properties',
-    desc: 'A real estate platform built for the Zimbabwe market. Browse, list, and discover properties with a clean modern interface.',
-    tags: ['React', 'Real Estate', 'Zimbabwe'],
-    url: 'https://finesse-properties-app.vercel.app',
-    gh: '',
-    img: null
-  });
-  renderProjects();
-
-  // ── Experience ──
+  // Experience
   const exps = [];
   function openExpModal() { document.getElementById('expModal').classList.add('open'); }
   function closeExpModal() {
@@ -1072,7 +1024,7 @@
   function renderTimeline() {
     const el = document.getElementById('timeline');
     if (!exps.length) {
-      el.innerHTML = '<p style="color:var(--muted);font-size:13px;font-family:Space Mono,monospace">// No entries yet — add your first below</p>';
+      el.innerHTML = '<p style="color:var(--muted);font-size:13px;font-family:\'Space Mono\',monospace">// No entries yet — add your first below</p>';
       return;
     }
     el.innerHTML = exps.map(e => `
@@ -1086,6 +1038,75 @@
       </div>`).join('');
   }
   renderTimeline();
+
+  // Certificates
+  const certs = [
+    {
+      title: 'Python Essentials',
+      issuer: 'Cisco',
+      img: 'https://drive.google.com/uc?export=view&id=1bCW6WfkEavnsMOu6rkGYHGuSLSn_1jDI',
+      link: 'https://drive.google.com/file/d/1bCW6WfkEavnsMOu6rkGYHGuSLSn_1jDI/view'
+    },
+    {
+      title: 'Siemens Virtual Work Experience',
+      issuer: 'Siemens / Springpod',
+      img: 'https://drive.google.com/uc?export=view&id=1wVVyTGtSCMqDerDpjfCzYMml4enFDHAt',
+      link: 'https://drive.google.com/file/d/1wVVyTGtSCMqDerDpjfCzYMml4enFDHAt/view'
+    },
+    {
+      title: 'Smart Grid Systems',
+      issuer: 'NPTEL',
+      img: 'https://drive.google.com/uc?export=view&id=1E_nxtq5EjCqQULwMrq77-5m28_Tdh67E',
+      link: 'https://drive.google.com/file/d/1E_nxtq5EjCqQULwMrq77-5m28_Tdh67E/view'
+    },
+    {
+      title: 'Power Quality',
+      issuer: 'NPTEL',
+      img: 'https://drive.google.com/uc?export=view&id=1HgzWUA1suEiUCllmgT0cap0hESdW8kC6',
+      link: 'https://drive.google.com/file/d/1HgzWUA1suEiUCllmgT0cap0hESdW8kC6/view'
+    },
+    {
+      title: 'Prompt Engineering',
+      issuer: 'FreeAcademy.AI',
+      img: 'https://drive.google.com/uc?export=view&id=1G2NeF14mEq2SF5Job4vJ3vfH34ng655x',
+      link: 'https://drive.google.com/file/d/1G2NeF14mEq2RF5Job4vJ3vfH34ng655x/view'
+    }
+  ];
+
+  function renderCerts() {
+    document.getElementById('certsGrid').innerHTML = certs.map((c, i) => `
+      <div class="cert-card">
+        <div class="cert-thumb-wrap" onclick="openLightbox(${i})">
+          <img class="cert-thumb" src="${c.img}" alt="${c.title}" onerror="this.style.display='none'" />
+          <div class="cert-thumb-overlay">🔍</div>
+        </div>
+        <div class="cert-body">
+          <div class="cert-issuer">${c.issuer}</div>
+          <div class="cert-title">${c.title}</div>
+          <div class="cert-actions">
+            <button class="cert-btn cert-btn-view" onclick="openLightbox(${i})">👁 Preview</button>
+            <a class="cert-btn cert-btn-open" href="${c.link}" target="_blank">↗ Open</a>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+  renderCerts();
+
+  // Lightbox
+  function openLightbox(i) {
+    const c = certs[i];
+    document.getElementById('certLightboxTitle').textContent = c.title + ' — ' + c.issuer;
+    document.getElementById('certLightboxImg').src = c.img;
+    document.getElementById('certLightboxOpen').href = c.link;
+    document.getElementById('certLightbox').classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('certLightbox').classList.remove('open');
+    document.getElementById('certLightboxImg').src = '';
+  }
+  document.getElementById('certLightbox').addEventListener('click', e => {
+    if (e.target === document.getElementById('certLightbox')) closeLightbox();
+  });
 </script>
 </body>
 </html>
