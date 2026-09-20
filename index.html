@@ -773,7 +773,7 @@
       <h2 class="section-title">Who I am.</h2>
     </div>
     <p class="about-text" contenteditable="true" spellcheck="false">
-      Electrical &amp; Electronic Engineering student at Vignan Institute of Information Technology, with a passion for building digital products that solve real problems. I bridge the gap between hardware systems and the web — from configuring Building Management Systems to deploying full-stack applications. Currently developing Finesse Properties, a real estate platform built for the Zimbabwe market.
+      Electrical and Electronics Engineering student with practical experience in embedded systems, IoT, battery management, and electronics prototyping. Skilled in Python, C++, ESP32, and Blynk, with an interest in smart energy and intelligent electrical systems.
     </p>
     <div class="stats-row">
       <div class="stat-card">
@@ -785,7 +785,7 @@
         <div class="stat-label">Certificates</div>
       </div>
       <div class="stat-card">
-        <div class="stat-num" contenteditable="true" spellcheck="false">21</div>
+        <div class="stat-num" id="ageNum"></div>
         <div class="stat-label">Years Old</div>
       </div>
     </div>
@@ -906,6 +906,16 @@
 </div>
 
 <script>
+  // Auto age from DOB 10/09/2004
+  (function() {
+    const dob = new Date(2004, 8, 10); // month is 0-indexed
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+    document.getElementById('ageNum').textContent = age;
+  })();
+
   // Typewriter
   const roles = ['EEE Student', 'Problem Solver', 'Builder', 'Developer'];
   let ri = 0, ci = 0, del = false;
